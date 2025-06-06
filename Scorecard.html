@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quality Scorecard Form</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Customer Service Quality Scorecard</h2>
+
+  <form id="scorecardForm">
+    <label for="agentName">Agent Name</label>
+    <input type="text" id="agentName" name="agentName" required>
+
+    <label for="auditDate">Audit Date</label>
+    <input type="date" id="auditDate" name="auditDate" required>
+
+    <label for="channel">Channel</label>
+    <select id="channel" name="channel" required>
+      <option value="">Select Channel</option>
+      <option value="Call">Call</option>
+      <option value="Email">Email</option>
+      <option value="Chat">Chat</option>
+    </select>
+
+    <label for="clearCommunication">Clear Written Communication</label>
+    <select id="clearCommunication" name="clearCommunication" required>
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="Partial">Partial</option>
+      <option value="No">No</option>
+    </select>
+
+    <label for="tone">Friendly & Professional Tone</label>
+    <select id="tone" name="tone" required>
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="Partial">Partial</option>
+      <option value="No">No</option>
+    </select>
+
+    <label for="productKnowledge">Correct Product/Service Knowledge</label>
+    <select id="productK
