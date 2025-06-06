@@ -60,7 +60,14 @@
 
   <form id="scorecardForm">
     <label for="agentName">Agent Name</label>
-    <input type="text" id="agentName" name="agentName" required>
+    <select id="agentName" name="agentName" required>
+      <option value="">Select an agent</option>
+      <option value="Mia Davis">Mia Davis</option>
+      <option value="Allen Anderson">Allen Anderson</option>
+      <option value="Carol Lim">Carol Lim</option>
+      <option value="Nessie">Nessie</option>
+      <option value="Prince Patterson">Prince Patterson</option>
+    </select>
 
     <label for="auditDate">Audit Date</label>
     <input type="date" id="auditDate" name="auditDate" required>
@@ -90,4 +97,63 @@
     </select>
 
     <label for="productKnowledge">Correct Product/Service Knowledge</label>
-    <select id="productK
+    <select id="productKnowledge" name="productKnowledge" required>
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="Partial">Partial</option>
+      <option value="No">No</option>
+    </select>
+
+    <label for="timelyResponse">Timely Response & Resolution</label>
+    <select id="timelyResponse" name="timelyResponse" required>
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="Partial">Partial</option>
+      <option value="No">No</option>
+    </select>
+
+    <label for="transparency">Transparency About Limitations</label>
+    <select id="transparency" name="transparency" required>
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="Partial">Partial</option>
+      <option value="No">No</option>
+    </select>
+
+    <label for="proactiveness">Proactiveness in Updates</label>
+    <select id="proactiveness" name="proactiveness" required>
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="Partial">Partial</option>
+      <option value="No">No</option>
+    </select>
+
+    <label for="comments">Additional Comments</label>
+    <textarea id="comments" name="comments" rows="4"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("scorecardForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = {
+        agentName: document.getElementById("agentName").value,
+        auditDate: document.getElementById("auditDate").value,
+        channel: document.getElementById("channel").value,
+        clearCommunication: document.getElementById("clearCommunication").value,
+        tone: document.getElementById("tone").value,
+        productKnowledge: document.getElementById("productKnowledge").value,
+        timelyResponse: document.getElementById("timelyResponse").value,
+        transparency: document.getElementById("transparency").value,
+        proactiveness: document.getElementById("proactiveness").value,
+        comments: document.getElementById("comments").value
+      };
+
+      console.log("Test Submission Data:", formData);
+      alert("Test submission captured. Open the browser console (F12) to see the data.");
+    });
+  </script>
+</body>
+</html>
