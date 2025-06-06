@@ -111,6 +111,13 @@
       object-fit: cover;
       border: 2px solid #ccc;
     }
+
+    #scoreSummary {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2563eb;
+    }
   </style>
 </head>
 <body>
@@ -155,53 +162,67 @@
     </div>
 
     <div class="tab-content">
-      <label for="clearCommunication">Clear Written Communication</label>
+      <label for="clearCommunication">Clear Written Communication (1-5)</label>
       <select id="clearCommunication" name="clearCommunication" required>
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="Partial">Partial</option>
-        <option value="No">No</option>
+        <option value="">Select Score</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
       </select>
 
-      <label for="tone">Friendly & Professional Tone</label>
+      <label for="tone">Friendly & Professional Tone (1-5)</label>
       <select id="tone" name="tone" required>
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="Partial">Partial</option>
-        <option value="No">No</option>
+        <option value="">Select Score</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
       </select>
 
-      <label for="productKnowledge">Correct Product/Service Knowledge</label>
+      <label for="productKnowledge">Correct Product/Service Knowledge (1-5)</label>
       <select id="productKnowledge" name="productKnowledge" required>
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="Partial">Partial</option>
-        <option value="No">No</option>
+        <option value="">Select Score</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
       </select>
 
-      <label for="timelyResponse">Timely Response & Resolution</label>
+      <label for="timelyResponse">Timely Response & Resolution (1-5)</label>
       <select id="timelyResponse" name="timelyResponse" required>
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="Partial">Partial</option>
-        <option value="No">No</option>
+        <option value="">Select Score</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
       </select>
 
-      <label for="transparency">Transparency About Limitations</label>
+      <label for="transparency">Transparency About Limitations (1-5)</label>
       <select id="transparency" name="transparency" required>
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="Partial">Partial</option>
-        <option value="No">No</option>
+        <option value="">Select Score</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
       </select>
 
-      <label for="proactiveness">Proactiveness in Updates</label>
+      <label for="proactiveness">Proactiveness in Updates (1-5)</label>
       <select id="proactiveness" name="proactiveness" required>
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="Partial">Partial</option>
-        <option value="No">No</option>
+        <option value="">Select Score</option>
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
       </select>
+
+      <div id="scoreSummary">Average Score: N/A</div>
     </div>
 
     <div class="tab-content">
@@ -223,24 +244,83 @@
     contents[index].classList.add('active');
   }
 
+  function updateScoreSummary() {
+    const fields = [
+      "clearCommunication",
+      "tone",
+      "productKnowledge",
+      "timelyResponse",
+      "transparency",
+      "proactiveness"
+    ];
+
+    let scores = [];
+    fields.forEach(id => {
+      const val = parseInt(document.getElementById(id).value);
+      if (!isNaN(val)) scores.push(val);
+    });
+
+    const scoreSummary = document.getElementById("scoreSummary");
+
+    if (scores.length > 0) {
+      const average = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+      scoreSummary.textContent = `Average Score: ${average}`;
+
+      const avg = parseFloat(average);
+      if (avg >= 4.5) {
+        scoreSummary.style.color = "green";
+      } else if (avg >= 4.0) {
+        scoreSummary.style.color = "#2563eb"; // blue
+      } else if (avg >= 3.0) {
+        scoreSummary.style.color = "orange";
+      } else {
+        scoreSummary.style.color = "red";
+      }
+    } else {
+      scoreSummary.textContent = "Average Score: N/A";
+      scoreSummary.style.color = "#2563eb";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    ["clearCommunication", "tone", "productKnowledge", "timelyResponse", "transparency", "proactiveness"]
+      .forEach(id => {
+        document.getElementById(id).addEventListener("change", updateScoreSummary);
+      });
+  });
+
   document.getElementById("scorecardForm").addEventListener("submit", function(e) {
     e.preventDefault();
+
+    const scores = [
+      parseInt(document.getElementById("clearCommunication").value),
+      parseInt(document.getElementById("tone").value),
+      parseInt(document.getElementById("productKnowledge").value),
+      parseInt(document.getElementById("timelyResponse").value),
+      parseInt(document.getElementById("transparency").value),
+      parseInt(document.getElementById("proactiveness").value)
+    ];
+
+    const averageScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
 
     const formData = {
       agentName: document.getElementById("agentName").value,
       auditDate: document.getElementById("auditDate").value,
       channel: document.getElementById("channel").value,
-      clearCommunication: document.getElementById("clearCommunication").value,
-      tone: document.getElementById("tone").value,
-      productKnowledge: document.getElementById("productKnowledge").value,
-      timelyResponse: document.getElementById("timelyResponse").value,
-      transparency: document.getElementById("transparency").value,
-      proactiveness: document.getElementById("proactiveness").value,
+      scores: {
+        clearCommunication: scores[0],
+        tone: scores[1],
+        productKnowledge: scores[2],
+        timelyResponse: scores[3],
+        transparency: scores[4],
+        proactiveness: scores[5]
+      },
+      averageScore: averageScore,
       comments: document.getElementById("comments").value
     };
 
     console.log("Form Submitted:", formData);
-    alert("Form submitted! Check console for captured data.");
+    alert(`Form submitted! Average Score: ${averageScore}`);
   });
 </script>
 
