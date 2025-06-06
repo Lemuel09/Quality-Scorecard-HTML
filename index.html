@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quality Scorecard Tabs</title>
+  <title>Quality Scorecard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -99,15 +99,14 @@
 
     .image-row {
       display: flex;
-      gap: 20px;
+      justify-content: center;
       margin-top: 20px;
-      justify-content: space-evenly;
     }
 
     .image-row img {
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       border: 2px solid #ccc;
     }
@@ -117,6 +116,7 @@
       font-size: 18px;
       font-weight: bold;
       color: #2563eb;
+      text-align: center;
     }
   </style>
 </head>
@@ -141,12 +141,12 @@
         <option value="Prince Patterson">Prince Patterson</option>
       </select>
 
-      <div class="image-row">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mia">
-        <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Allen">
-        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Carol">
-        <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="Nessie">
-        <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Prince">
+      <div class="image-row" id="agentImageRow">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mia Davis" id="img-Mia Davis" style="display: none;">
+        <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Allen Anderson" id="img-Allen Anderson" style="display: none;">
+        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Carol Lim" id="img-Carol Lim" style="display: none;">
+        <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="Nessie" id="img-Nessie" style="display: none;">
+        <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Prince Patterson" id="img-Prince Patterson" style="display: none;">
       </div>
 
       <label for="auditDate">Audit Date</label>
@@ -163,7 +163,7 @@
 
     <div class="tab-content">
       <label for="clearCommunication">Clear Written Communication (1-5)</label>
-      <select id="clearCommunication" name="clearCommunication" required>
+      <select id="clearCommunication" required>
         <option value="">Select Score</option>
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -173,7 +173,7 @@
       </select>
 
       <label for="tone">Friendly & Professional Tone (1-5)</label>
-      <select id="tone" name="tone" required>
+      <select id="tone" required>
         <option value="">Select Score</option>
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -183,7 +183,7 @@
       </select>
 
       <label for="productKnowledge">Correct Product/Service Knowledge (1-5)</label>
-      <select id="productKnowledge" name="productKnowledge" required>
+      <select id="productKnowledge" required>
         <option value="">Select Score</option>
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -193,7 +193,7 @@
       </select>
 
       <label for="timelyResponse">Timely Response & Resolution (1-5)</label>
-      <select id="timelyResponse" name="timelyResponse" required>
+      <select id="timelyResponse" required>
         <option value="">Select Score</option>
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -203,7 +203,7 @@
       </select>
 
       <label for="transparency">Transparency About Limitations (1-5)</label>
-      <select id="transparency" name="transparency" required>
+      <select id="transparency" required>
         <option value="">Select Score</option>
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -213,7 +213,7 @@
       </select>
 
       <label for="proactiveness">Proactiveness in Updates (1-5)</label>
-      <select id="proactiveness" name="proactiveness" required>
+      <select id="proactiveness" required>
         <option value="">Select Score</option>
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -222,7 +222,7 @@
         <option value="5">5 - Excellent</option>
       </select>
 
-      <div id="scoreSummary">Average Score: N/A</div>
+      <div id="scoreSummary">Score: N/A</div>
     </div>
 
     <div class="tab-content">
@@ -244,6 +244,16 @@
     contents[index].classList.add('active');
   }
 
+  function updateAgentImage() {
+    const selectedAgent = document.getElementById("agentName").value;
+    const imageRow = document.getElementById("agentImageRow");
+    const allImages = imageRow.querySelectorAll("img");
+
+    allImages.forEach(img => {
+      img.style.display = (img.id === `img-${selectedAgent}`) ? "block" : "none";
+    });
+  }
+
   function updateScoreSummary() {
     const fields = [
       "clearCommunication",
@@ -263,26 +273,31 @@
     const scoreSummary = document.getElementById("scoreSummary");
 
     if (scores.length > 0) {
-      const average = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
-      scoreSummary.textContent = `Average Score: ${average}`;
+      const totalScore = scores.reduce((a, b) => a + b, 0);
+      const average = (totalScore / scores.length).toFixed(2);
+      const scoreOutOf100 = ((totalScore / (5 * scores.length)) * 100).toFixed(0);
 
-      const avg = parseFloat(average);
-      if (avg >= 4.5) {
+      scoreSummary.textContent = `Score: ${scoreOutOf100}% (Average: ${average})`;
+
+      const scorePercent = parseFloat(scoreOutOf100);
+      if (scorePercent >= 90) {
         scoreSummary.style.color = "green";
-      } else if (avg >= 4.0) {
-        scoreSummary.style.color = "#2563eb"; // blue
-      } else if (avg >= 3.0) {
+      } else if (scorePercent >= 80) {
+        scoreSummary.style.color = "#2563eb";
+      } else if (scorePercent >= 60) {
         scoreSummary.style.color = "orange";
       } else {
         scoreSummary.style.color = "red";
       }
     } else {
-      scoreSummary.textContent = "Average Score: N/A";
+      scoreSummary.textContent = "Score: N/A";
       scoreSummary.style.color = "#2563eb";
     }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("agentName").addEventListener("change", updateAgentImage);
+
     ["clearCommunication", "tone", "productKnowledge", "timelyResponse", "transparency", "proactiveness"]
       .forEach(id => {
         document.getElementById(id).addEventListener("change", updateScoreSummary);
@@ -301,7 +316,9 @@
       parseInt(document.getElementById("proactiveness").value)
     ];
 
-    const averageScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+    const totalScore = scores.reduce((a, b) => a + b, 0);
+    const averageScore = (totalScore / scores.length).toFixed(2);
+    const scoreOutOf100 = ((totalScore / (5 * scores.length)) * 100).toFixed(0);
 
     const formData = {
       agentName: document.getElementById("agentName").value,
@@ -316,11 +333,12 @@
         proactiveness: scores[5]
       },
       averageScore: averageScore,
+      scoreOutOf100: scoreOutOf100,
       comments: document.getElementById("comments").value
     };
 
     console.log("Form Submitted:", formData);
-    alert(`Form submitted! Average Score: ${averageScore}`);
+    alert(`Form submitted! Score: ${scoreOutOf100}% (Average: ${averageScore})`);
   });
 </script>
 
